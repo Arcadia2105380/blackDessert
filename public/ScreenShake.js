@@ -10,9 +10,9 @@ Phaser.Plugin.ScreenShake = function (game, parent) {
   // settings by default
   this._settings = {
     shakesCount: 0,
-    shakeX: true,
+    shakeX: false,
     shakeY: true,
-    sensCoef: 0.5
+    sensCoef: 10
   }
   this.game.camera.bounds = null
 
@@ -22,13 +22,17 @@ Phaser.Plugin.ScreenShake = function (game, parent) {
   this._moveCamera = function () {
     if (this._settings.shakesCount > 0) {
       var sens = this._settings.shakesCount * this._settings.sensCoef
-
+      var i=70000000;
       if (this._settings.shakesCount % 2) {
         this.game.camera.x += this._settings.shakeX ? sens : 0
         this.game.camera.y += this._settings.shakeY ? sens : 0
+        while(i)
+          i--;
       } else {
         this.game.camera.x -= this._settings.shakeX ? sens : 0
         this.game.camera.y -= this._settings.shakeY ? sens : 0
+        while(i)
+          i--;
       }
 
       this._settings.shakesCount--

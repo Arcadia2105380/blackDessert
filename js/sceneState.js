@@ -78,7 +78,7 @@ sceneState.create = function(){
 
 sceneState.search = function(){
   console.log("search")
-  game.plugins.screenShake.shake(30);
+  game.plugins.screenShake.shake(4);
 
 /*****send message to server*****/
 
