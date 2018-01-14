@@ -5,6 +5,7 @@ var numLine = 4
 
 miniGameState.count = 0
 miniGameState.button = []
+miniGameState.check = 0
 
 var style = {                                                                                                             
   font: '32px Arial',
@@ -26,6 +27,10 @@ miniGameState.create = function(){
   miniGameState.bg.scale.setTo(scaleX,scaleY)
   miniGameState.bg.alpha = 0
   miniGameState.add.tween(miniGameState.bg).to({ alpha: 0.99 }, 0, Phaser.Easing.Linear.None, true)
+
+  miniGameState.hero = sceneState.add.sprite(0, 0, playerInfo.heroChoose)
+  miniGameState.hero.scale.setTo(scaleX,scaleY)
+  miniGameState.hero.anchor.setTo(-0.05,-0.2)
 
   miniGameState.scoreText = miniGameState.add.text(10, 10, '0', style)
 
@@ -58,10 +63,13 @@ miniGameState.createButton = function(){
   miniGameState.button[miniGameState.count].inputEnabled = true
   miniGameState.button[miniGameState.count].events.onInputDown.add(miniGameState.boom,{n : miniGameState.count})
   miniGameState.count++
+  if(miniGameState.count == numButton){
+    game.time.events.add(3000, miniGameState.end, this)
+    miniGameState.count = 0
+  }
 }
 
 miniGameState.boom = function(){
-
   console.log('hit!')
   var boom = miniGameState.add.sprite(miniGameState.button[this.n].position.x, miniGameState.button[this.n].position.y, 'kaboom');
   var booom = boom.animations.add('booooom');
@@ -72,7 +80,15 @@ miniGameState.boom = function(){
 }
 
 miniGameState.end = function(){
-  console.log("haha")
+  console.log(miniGameState.hero.tint)
+  miniGameState.tint = miniGameState.hero.tint
+  miniGameState.hero.tint = 0xff0000
+  game.time.events.add(200, miniGameState.noTint, this)
+}
+
+miniGameState.noTint = function(){
+  miniGameState.hero.tint = miniGameState.tint
+  game.time.events.add(500, miniGameState.backState, this)
 }
 
 miniGameState.backState = function(){
